@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <!--页头-->
-    <mt-header fixed :title=title_ id="title"></mt-header>
 
     <router-view></router-view>
 
@@ -34,7 +32,6 @@
     name: 'App',
     data () {
       return {
-        title_: 'interesting',
         selected: '_home',
         activeClass: 'active1',
 
@@ -47,25 +44,19 @@
       my
     },
     watch: {
-      selected(val){
-        if (val === '_home') {
-          this.activeClass = 'active1';
-        } else if (val === '_search') {
-          this.activeClass = 'active2';
-        } else if (val === 'my') {
-          this.activeClass = 'active3';
-        }
-      },
       '$route' (to) {
         if (to.path == '/home') {
-          this.title_ = 'interesting';
           document.title = '首页';
+          this.selected = '_home';
+          this.activeClass = 'active1';
         } else if (to.path == '/search') {
-          this.title_ = 'search';
           document.title = '搜索';
+          this.selected = 'search';
+          this.activeClass = 'active2';
         } else if (to.path == '/my') {
-          this.title_ = 'my';
           document.title = '个人中心';
+          this.selected = 'my';
+          this.activeClass = 'active3';
         }
 
       }
@@ -73,7 +64,9 @@
     mounted: function () {
 
     },
-    methods: {}
+    methods: {
+
+    }
   }
 </script>
 
@@ -88,7 +81,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
-    margin-top: 60px;
   }
 
   html {
@@ -99,15 +91,17 @@
     text-decoration: none;
   }
 
-  ul li{
+  input, select {
+    outline: none;
+    border: 0;
+  }
+  .tabbar{
+    width: 100%;
+  }
+
+  ul li {
     list-style: none;
   }
-
-  #title {
-    /*display: block;*/
-    /*text-align: center;*/
-  }
-
   .tabbar img {
     width: 1.2rem;
     height: 1.2rem;

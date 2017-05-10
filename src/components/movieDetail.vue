@@ -31,6 +31,7 @@ s
     data () {
       return {
         items: {},
+        medium:''
       }
     },
     watch: {},
@@ -39,32 +40,26 @@ s
         let u = window.location.href,
           m = u.split('id=');
         return m[1];
-
-      },
-      getDetail(){
-        const video_id = this.getQuery('id');
-        this.$http.jsonp('https://api.douban.com/v2/movie/subject/' + video_id)
-          .then(function (data) {
-            console.log(data);
-            this.items = data.body;
-
-          }, function (data) {
-            console.log(data)
-          })
-      },
-      getComments(){
-        const video_id = this.getQuery('id');
-        this.$http.jsonp('https://api.douban.com/v2/movie/subject/'+ video_id+'/comments')
-          .then(function (data) {
-            console.log(data);
-          }, function (data) {
-            console.log(data)
-          })
       }
     },
     mounted: function () {
-      this.getDetail();
-      this.getComments();
+      const video_id = this.getQuery('id');
+      this.$http.jsonp('https://api.douban.com/v2/movie/subject/' + video_id)
+        .then(function (data) {
+          console.log(data);
+          this.items = data.body;
+
+        }, function (data) {
+          console.log(data)
+        });
+
+
+      this.$http.jsonp('https://api.douban.com/v2/movie/search?q=张艺谋')  ///v2/movie/coming_soon
+        .then(function (data1) {
+          console.log(data1);
+        }, function (data1) {
+          console.log(data1)
+        });
 
     }
   }
