@@ -1,29 +1,42 @@
 <template>
   <section class="clearfix">
-    <div class="content">
+    <p class="video_title">{{items.title}}</p>
+    <div class="content clearfix">
+      <div class="video_img">
+        <a :href="items.mobile_url">
+          <img :src="items.images.medium" alt="">
+        </a>
+      </div>
       <div class="video_desc clearfix">
-        <span>分类:</span>
         <ul>
+          <li>{{items.rating.average}}分</li>
+          <br/><br/>
+          <li>{{items.year}}年</li>
+          <br/>
+          <li v-for="country in items.countries">
+            {{country}}&nbsp;
+
+          </li>
+          <br/>
           <li v-for="genre in items.genres">
             {{genre}} &nbsp;
 
           </li>
         </ul>
         <br>
-        <span class="summary">{{items.summary}}</span>
-      </div>
-      <div class="video_img">
-        <img :src="items.images.medium" alt="">
-        <span class="video_name">{{items.title}}</span>
-        <span class="average">{{items.rating.average}}</span>
       </div>
     </div>
+    <span class="summary">{{items.summary}}</span>
     <div class="reviews">
       {{items.property}}
+
+
     </div>
   </section>
 </template>
 s
+
+
 
 <script>
   export default {
@@ -31,7 +44,6 @@ s
     data () {
       return {
         items: {},
-        medium:''
       }
     },
     watch: {},
@@ -66,56 +78,35 @@ s
 </script>
 
 <style scoped>
-  .clearfix {
-    content: '';
-    display: inline-block;
-    clear: both;
-  }
-
-  section {
-    /*width: 100%;*/
-    padding: 0 1rem 0 1rem;
-  }
-
   .content {
     width: 100%;
+    font-size: 0.7rem;
+    padding: 0.5rem 0.5rem;
+  }
+
+  .video_title {
+    width: 100%;
+    height: 2rem;
+    background: #333;
+    color: #fff;
+    font-size: 0.75rem;
+    text-align: center;
+    line-height: 2rem;
   }
 
   .video_desc, .video_img {
     display: inline-block;
   }
 
-  .video_desc {
-    float: left;
-    display: block;
-    font-size: 0.7rem;
-    width: 66%;
+  .video_desc ul li {
+    display: inline-block;
   }
 
   .summary {
     display: block;
     text-indent: 16px;
-  }
-
-  .video_img {
-    float: right;
-  }
-
-  .video_img img {
-    display: block;
-    margin-bottom: 0.3rem;
-  }
-
-  .video_name, .average {
-    display: block;
     font-size: 0.7rem;
-    width: 100%;
-    text-align: center;
+    padding: 0.5rem 0.5rem;
   }
-
-  .average {
-    color: #16a573;
-  }
-
 </style>
 

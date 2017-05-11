@@ -1,13 +1,21 @@
 <template>
   <section>
     <mt-header fixed title="interesting"></mt-header>
-    <div :class="{loading:isLoading}">
+
+    <!--setting-->
+    <div class="menu">
+      <span class="line"></span>
+      <span class="line"></span>
+      <span class="line"></span>
+    </div>
+
+    <div :class="{loading:isLoading,loading1}">
       <mt-spinner type="triple-bounce" color="#26a2ff" class="ani_load"></mt-spinner>
     </div>
     <div class="content">
 
       <p class="search_p">
-        <input type="text" placeholder="搜索..." id="search_text">
+        <input type="text" placeholder="搜索..." id="search_text" @keydown.enter="search_res()">
         <i class="search_i" @click="search_res()"></i>
       </p>
 
@@ -43,7 +51,8 @@
       return {
         items: {},
         value: '',
-        isLoading: false
+        isLoading: true,
+        loading1:true
       }
     },
     watch: {},
@@ -65,12 +74,14 @@
     },
     methods: {
       search_res(){
+        this.isLoading = false;
         let text = document.getElementById('search_text').value;
-        this.$http.jsonp('https://api.douban.com/v2/movie/search?q=' + text)
+        this.$http.jsonp('https://api.douban.com/v2/movie/in_theaters?city='+text+'&count=10')
           .then(function (data) {
-            console.log(data)
+            this.isLoading = true;
+            this.items = data.body;
           }, function (data) {
-            console.log(data)
+            console.log('失败:' + data)
           })
       }
     }
@@ -78,6 +89,27 @@
 </script>
 
 <style scoped>
+  .menu{
+    width: 1.5rem;
+    height: 1.5rem;
+    background: #e25313;
+    position: fixed;
+    top: 0.2rem;
+    left: 0.2rem;
+    z-index: 11;
+  }
+  .line{
+    display: inline-block;
+    width: 80%;
+    margin-left:10%;
+    height:0.2rem;
+    background: #0dbd89;
+  }
+
+
+
+
+
 .content{
   padding-top: 4rem;
 }
@@ -114,6 +146,9 @@
 
   .loading {
     display: none;
+  }
+  .loading1{
+    z-index: 2;
     width: 100%;
     height: 100%;
     position: fixed;
@@ -123,7 +158,6 @@
   }
 
   .ani_load {
-    z-index: 2;
     position: absolute;
     top: 40%;
     left: 50%;

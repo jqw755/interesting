@@ -18,20 +18,29 @@ export default new Router({
       component: App
     },
     {
-      path:'/home',
+      path: '/home',
       component: home
     },
     {
-      path:'/search',
-      component: search
+      path: '/search',
+      component: search,
+      beforeEnter(from, to, next){
+        next(vm => {
+          const b = confirm('are you sure ?');
+          if (b !== true) {
+            return false;
+          }
+        })
+      }
     },
     {
-      path:'/movieDetail',
+      path: '/movieDetail',
       component: movieDetail
     },
     {
-      path:'/my',
-      component: my
+      path: '/my',
+      component: my,
+
     }
   ]
 })

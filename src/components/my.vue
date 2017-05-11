@@ -48,7 +48,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   section {
     margin-bottom: 3.5rem;
   }
