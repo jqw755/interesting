@@ -3,11 +3,11 @@
     <mt-header fixed title="interesting"></mt-header>
 
     <!--setting-->
-    <div class="menu">
-      <span class="line"></span>
-      <span class="line"></span>
-      <span class="line"></span>
-    </div>
+    <!--<div class="menu">-->
+      <!--<span class="line"></span>-->
+      <!--<span class="line"></span>-->
+      <!--<span class="line"></span>-->
+    <!--</div>-->
 
     <div :class="{loading:isLoading,loading1}">
       <mt-spinner type="triple-bounce" color="#26a2ff" class="ani_load"></mt-spinner>

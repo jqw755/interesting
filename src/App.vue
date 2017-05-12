@@ -1,7 +1,11 @@
 <template>
   <div id="app">
 
-    <router-view></router-view>
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive"></router-view>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"></router-view>
+
 
     <!--页脚-->
     <mt-tabbar fixed class="tabbar" v-model="selected">

@@ -1,8 +1,8 @@
 <template>
   <section>
     <p class="search_p">
-      <input type="text" placeholder="搜索..." id="search_text">
-      <i class="search_i" id="search_i" @click="getSearch()"></i>
+      <input type="text" placeholder="..." id="search_text" @keydown.enter="getSearch()">
+      <span class="search_i" id="search_i" @click="getSearch()">发送</span>
     </p>
 
     <div class="content">
@@ -33,12 +33,11 @@
     },
     methods: {
       getSearch(){
-        let name = document.getElementById('search_text').value;
-        if (name !== '') {
-          this.$http.jsonp('https://api.weibo.com/2/statuses/home_timeline.json?app_secret=9df783a5fb3d745764ec0194ef89d8a7&source=732268538&screen_name=' + name)
+        let question = document.getElementById('search_text').value;
+        if (question !== '') {
+          this.$http.jsonp('http://api.jisuapi.com/iqa/query?appkey=be02a7f1d82973c8&question=' + question) //机器人智能问答
             .then(function (data) {
               console.log(data)
-              this.data = data.body.data.statuses;
             }, function (data) {
               console.log(data)
             })
@@ -56,9 +55,9 @@
   /*search*/
   .search_p {
     width: 100%;
-    height: 1.5rem;
-    position: fixed;
-    top: 0;
+    height: 1rem;
+    position: absolute;
+    bottom: 3.1rem;
     padding-top: 0.8rem;
     background: #1cbfcc;
   }
@@ -76,16 +75,18 @@
   }
 
   .search_i {
-    display: inline-block;
-    width: 0.8rem;
-    height: 0.8rem;
-    background: url("../assets/images/search_1.png") no-repeat;
-    background-size: 100% 100%;
+    width: 1.6rem;
+    height: 1.2rem;
     position: absolute;
     top: 50%;
-    right: 0.6rem;
+    right: 0.3rem;
     -webkit-transform: translate(0, -50%);
     transform: translate(0, -50%);
+    background: #267bd2;
+    color: #fff;
+    font-size: 0.5rem;
+    text-align: center;
+    line-height: 1.2rem;
   }
 
   .content {

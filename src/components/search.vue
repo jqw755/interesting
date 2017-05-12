@@ -3,7 +3,7 @@
 
     <mt-header title="发现" fixed>
       <router-link :to=$router slot="left">
-        <mt-button icon="back">返回</mt-button>
+        <mt-button icon="back" @click="$router.go(-1)">返回</mt-button>
       </router-link>
     </mt-header>
 
@@ -40,7 +40,7 @@
     },
     mounted: function () {
 //      console.log(this.$route.fullPath)
-      this.$http.jsonp('http://api.jisuapi.com/news/get?appkey=be02a7f1d82973c8')//极速数据新闻API,免费用户仅1000次调用 https://www.jisuapi.com/my/api.php
+      this.$http.jsonp('http://api.jisuapi.com/news/get?appkey=be02a7f1d82973c8')//http://api.jisuapi.com/news/get?appkey=be02a7f1d82973c8 极速数据新闻API,免费用户仅1000次调用 https://www.jisuapi.com/my/api.php
       //https://api.weibo.com/2/statuses/public_timeline.json?access_token=238afbb084f36036a0e30e7259015964&source=732268538
         .then(function (data) {
           console.log(data)
@@ -62,9 +62,9 @@
         _p.parentNode.style.height = 'auto';
       },
       loadTop(){
-        console.log('顶部下拉刷新')
         this.$http.jsonp('http://api.jisuapi.com/news/get?appkey=be02a7f1d82973c8')
           .then(function (data) {
+            console.log('顶部下拉刷新')
             this.data = data.body.result;
           }, function (data) {
             console.log(data)
@@ -72,15 +72,15 @@
         this.$refs.loadmore.onTopLoaded();
       },
       loadBottom(){
-        console.log('底部上拉刷新')
-        this.$http.jsonp('http://api.jisuapi.com/news/get?appkey=be02a7f1d82973c8')
-          .then(function (data) {
-            this.data = data.body.result;
-          }, function (data) {
-            console.log(data)
-          });
-        this.allLoaded = true;// 若数据已全部获取完毕
-        this.$refs.loadmore.onBottomLoaded();
+//        this.$http.jsonp('http://api.jisuapi.com/news/get?appkey=be02a7f1d82973c8')
+//          .then(function (data) {
+//            console.log('底部上拉刷新')
+//            this.data = data.body.result;
+//          }, function (data) {
+//            console.log(data)
+//          });
+//        this.allLoaded = true;// 若数据已全部获取完毕
+//        this.$refs.loadmore.onBottomLoaded();
       },
 
     }
@@ -93,6 +93,10 @@
   .content {
     padding: 3rem 0.7rem 3.8rem 0.7rem;
     font-size: 0.7rem;
+  }
+
+  .content ul {
+    min-height: 25rem;
   }
 
   .content ul li {

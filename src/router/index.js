@@ -14,7 +14,10 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: home
+      component: home,
+      meta: {
+        keepAlive: true // 需要被缓存   http://www.jianshu.com/p/0b0222954483  解决数据缓存问题
+      }
     },
     {
       path: '/search',
@@ -26,6 +29,9 @@ export default new Router({
             return false;
           }
         })
+      },
+      meta: {
+        keepAlive: false
       }
     },
     {
@@ -35,6 +41,9 @@ export default new Router({
     {
       path: '/my',
       component: my,
+      meta: {
+        keepAlive: false
+      }
 
     },
     {

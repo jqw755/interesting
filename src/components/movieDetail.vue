@@ -1,6 +1,6 @@
 <template>
   <section class="clearfix">
-    <p class="video_title">{{items.title}}</p>
+    <p class="video_title" @click="$router.go(-1)">{{items.title}}</p>
     <div class="content clearfix">
       <div class="video_img">
         <a :href="items.mobile_url">
@@ -29,8 +29,6 @@
     <span class="summary">{{items.summary}}</span>
     <div class="reviews">
       {{items.property}}
-
-
     </div>
   </section>
 </template>
@@ -58,9 +56,8 @@ s
       const video_id = this.getQuery('id');
       this.$http.jsonp('https://api.douban.com/v2/movie/subject/' + video_id)
         .then(function (data) {
-          console.log(data);
+//          console.log(data);
           this.items = data.body;
-
         }, function (data) {
           console.log(data)
         });
@@ -68,7 +65,7 @@ s
 
       this.$http.jsonp('https://api.douban.com/v2/movie/search?q=张艺谋')  ///v2/movie/coming_soon
         .then(function (data1) {
-          console.log(data1);
+//          console.log(data1);
         }, function (data1) {
           console.log(data1)
         });
@@ -79,7 +76,7 @@ s
 
 <style scoped>
   .content {
-    width: 100%;
+    /*width: 100%;*/
     font-size: 0.7rem;
     padding: 0.5rem 0.5rem;
   }
