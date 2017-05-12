@@ -5,21 +5,25 @@
       <router-link :to=$router slot="left">
         <mt-button icon="back">返回</mt-button>
       </router-link>
-      <!--<mt-button icon="more" slot="right"></mt-button>-->
     </mt-header>
 
     <div class="content">
-      <ul>
-        <li v-for="item in data">
-          <span>{{item.text}}</span>
-          <span>from {{item.location}} {{item.source}}</span>
-          <ul class="wei_img">
-            <li v-for="pic in item.pic_urls">
-              <img :src='pic.thumbnail_pic' alt="">
-            </li>
-          </ul>
-        </li>
-      </ul>
+      <h3>{{data.channel}}</h3>
+      <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
+        <ul>
+          <li v-for="(item,index) in data.list">
+            <h4 class="title">{{item.title}}</h4>
+            <span class="yuan"><a :href="item.weburl"> 原文>></a></span>
+            <span><img :src='item.pic' alt=""></span>
+            <div class="context_p">
+              <p v-html="item.content" class="context"></p>
+              <p class="context_mask" @click="look_more(index)" ref=index>
+                点击查看更多
+              </p>
+            </div>
+          </li>
+        </ul>
+      </mt-loadmore>
     </div>
 
   </section>
@@ -31,15 +35,16 @@
     data () {
       return {
         data: {},
+        allLoaded: false
       }
     },
     mounted: function () {
 //      console.log(this.$route.fullPath)
-      this.$http.jsonp('https://api.weibo.com/2/statuses/public_timeline.json?app_secret=9df783a5fb3d745764ec0194ef89d8a7&source=732268538')   //最新公开微博
+      this.$http.jsonp('http://api.jisuapi.com/news/get?appkey=be02a7f1d82973c8')//极速数据新闻API,免费用户仅1000次调用 https://www.jisuapi.com/my/api.php
       //https://api.weibo.com/2/statuses/public_timeline.json?access_token=238afbb084f36036a0e30e7259015964&source=732268538
         .then(function (data) {
           console.log(data)
-          this.data = data.body.data.statuses;
+          this.data = data.body.result;
         }, function (data) {
           console.log(data)
         })
@@ -49,17 +54,34 @@
 
       }
     },
-    filters: {
-      getDevice(){
-        let source = this.data.source;
-        console.log(source)
-        if (source != '' && source != undefined) {
-            const source1 = source.split('</')
-            console.log(source1)
-        }
-      }
-    },
+    filters: {},
     methods: {
+      look_more(i){
+        const _p = this.$refs.index[i];
+        _p.style.display = 'none';
+        _p.parentNode.style.height = 'auto';
+      },
+      loadTop(){
+        console.log('顶部下拉刷新')
+        this.$http.jsonp('http://api.jisuapi.com/news/get?appkey=be02a7f1d82973c8')
+          .then(function (data) {
+            this.data = data.body.result;
+          }, function (data) {
+            console.log(data)
+          });
+        this.$refs.loadmore.onTopLoaded();
+      },
+      loadBottom(){
+        console.log('底部上拉刷新')
+        this.$http.jsonp('http://api.jisuapi.com/news/get?appkey=be02a7f1d82973c8')
+          .then(function (data) {
+            this.data = data.body.result;
+          }, function (data) {
+            console.log(data)
+          });
+        this.allLoaded = true;// 若数据已全部获取完毕
+        this.$refs.loadmore.onBottomLoaded();
+      },
 
     }
   }
@@ -69,16 +91,81 @@
 
   /*content*/
   .content {
-    padding: 2.8rem 0.7rem 3rem 0.7rem;
+    padding: 3rem 0.7rem 3.8rem 0.7rem;
     font-size: 0.7rem;
   }
 
   .content ul li {
-    padding-bottom: 0.7rem;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 2px solid #ff6c26;
   }
 
-  .wei_img li{
+  .yuan {
+    font-size: 0.6rem;
+    color: #5a9bec;
+    margin: 0.4rem 0.2rem;
+  }
+
+  .context_p {
+    width: 100%;
+    height: 7rem;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .p_show {
+    display: none;
+  }
+
+  .context_mask {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3rem;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 2;
+    font-size: 0.7rem;
+    color: #5a9bec;
+    text-align: center;
+    line-height: 3rem;
+  }
+
+  .wei_img li {
     display: inline-block;
   }
 </style>
+
+<!--
+新闻列表
+请求链接：http://wangyi.butterfly.mopaasapp.com/news/api?type=war&page=1&limit=10
+type :新闻类型
+page :当前页数
+limit :请求条数
+例如：
+type=war&page=1&limit=10 ,请求军事新闻第1-10条。
+type=war&page=2&limit=10 ,请求军事新闻第10-20条，以此类推...
+
+#	代码	类型
+1	war	军事
+2	sport	体育
+3	tech	科技
+4	edu	教育
+5	ent	娱乐
+6	money	财经
+7	gupiao	股票
+8	travel	旅游
+9	lady	女人
+
+
+
+
+详情列表
+请求链接：http://wangyi.butterfly.mopaasapp.com/detail/api?simpleId=8
+
+simpleId:新闻id
+例如：simpleId=8 即获取id为8的新闻内容，该id可由上面的新闻列表请求数据中获得
+
+-->
 

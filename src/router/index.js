@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import VueResource from 'vue-resource'
-import App from '../App.vue'
 import home from '@/components/index'
 import search from '@/components/search'
 import movieDetail from '@/components/movieDetail'
@@ -14,11 +13,7 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/App',
-      component: App
-    },
-    {
-      path: '/home',
+      path: '/',
       component: home
     },
     {
@@ -41,6 +36,10 @@ export default new Router({
       path: '/my',
       component: my,
 
+    },
+    {
+      path:'*',
+      redirect:'/'
     }
   ]
 })

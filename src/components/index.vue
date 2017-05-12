@@ -64,7 +64,6 @@
           //https://free-api.heweather.com/v5/weather?city=上海&key=6d206d80917540cba8cb7eab7464a230  天气接口每日3000次
           //http://baike.baidu.com/api/openapi/BaikeLemmaCardApi?scope=103&format=json&appid=379020&bk_key=上海&bk_length=1000   百度百科接口
           //http://suggest.taobao.com/sug?code=utf-8&q=6  淘宝商品搜索
-
 //          console.log(data);
           this.items = data.body;
         }, function (data) {

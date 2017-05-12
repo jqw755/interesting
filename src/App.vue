@@ -7,7 +7,7 @@
     <mt-tabbar fixed class="tabbar" v-model="selected">
       <mt-tab-item id="_home" :class="activeClass">
         <img slot="icon" src="./assets/images/home.png">
-        <router-link to="/home">首页</router-link>
+        <router-link to="/">首页</router-link>
       </mt-tab-item>
       <mt-tab-item id="_search" :class="activeClass">
         <img slot="icon" src="./assets/images/search.png">
@@ -45,9 +45,9 @@
     },
     watch: {
       '$route' (to) {
-        if (to.path == '/home') {
+        if (to.path == '/') {
           document.title = '首页';
-          this.selected = '_home';
+          this.selected = '/';
           this.activeClass = 'active1';
         } else if (to.path == '/search') {
           document.title = '搜索';
@@ -95,8 +95,14 @@
     outline: none;
     border: 0;
   }
+
+  header{
+    z-index:10 !important;
+  }
+
   .tabbar{
     width: 100%;
+    z-index:10 !important;
   }
 
   ul li {
