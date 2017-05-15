@@ -35,7 +35,7 @@
     data () {
       return {
         data: {},
-        allLoaded: false
+        allLoaded: false,
       }
     },
     mounted: function () {

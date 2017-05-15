@@ -4,19 +4,16 @@
       <input type="text" placeholder="..." id="search_text" @keydown.enter="getSearch()">
       <span class="search_i" id="search_i" @click="getSearch()">发送</span>
     </p>
-
+    <p style="color: red;">这里有问题还没有解决,在看</p>
     <div class="content">
-      <ul>
-        <li v-for="item in data">
-          <span>
-
-          </span>
-          <span>{{item.text}}</span>
-          <ul class="pic">
-            <li v-for="pic in item.pic_urls">
-              <img :src="pic.thumbnail_pic" alt="">
-            </li>
-          </ul>
+      <ul >  <!--v-for="count in counts"-->
+        <li>
+          <p v-if="msg">
+            我:{{msg}}
+          </p>
+          <p v-if="data.content">
+            机器人:{{data.content}}
+          </p>
         </li>
       </ul>
     </div>
@@ -29,17 +26,27 @@
     data () {
       return {
         data: {},
+        msg: '',
+        counts: 0
       }
     },
     methods: {
       getSearch(){
         let question = document.getElementById('search_text').value;
+        this.msg = question;
+        document.getElementById('search_text').value = '';
         if (question !== '') {
           this.$http.jsonp('http://api.jisuapi.com/iqa/query?appkey=be02a7f1d82973c8&question=' + question) //机器人智能问答
             .then(function (data) {
-              console.log(data)
+              if (data.status === 200) {
+//                console.log(data);
+                this.counts += 1;
+                this.data = data.body.result;
+              } else {
+                alert('服务端错误' + data.status);
+              }
             }, function (data) {
-              console.log(data)
+              alert(data)
             })
         }
       }
@@ -90,7 +97,7 @@
   }
 
   .content {
-    padding-top: 3rem;
+    padding-top: 1rem;
     font-size: 0.7rem;
   }
 
@@ -98,7 +105,8 @@
     padding: 0 0.5rem 1rem 0.5rem;
 
   }
-  .pic li{
+
+  .pic li {
     display: inline-block;
     text-align: center;
   }
