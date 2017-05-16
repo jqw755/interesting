@@ -4,15 +4,17 @@
       <input type="text" placeholder="..." id="search_text" @keydown.enter="getSearch()">
       <span class="search_i" id="search_i" @click="getSearch()">发送</span>
     </p>
-    <p style="color: red;">这里有问题还没有解决,在看</p>
+
+    <h5 style="text-align: right">bug重重啊</h5>
+
     <div class="content">
-      <ul >  <!--v-for="count in counts"-->
+      <ul v-for="message in messages">
         <li>
-          <p v-if="msg">
-            我:{{msg}}
+          <p v-if="message" class="message_p">
+            <span class="me">{{message.q}}</span>
           </p>
-          <p v-if="data.content">
-            机器人:{{data.content}}
+          <p v-if="message" class="message_p">
+            <span class="other">{{message.a}}</span>
           </p>
         </li>
       </ul>
@@ -26,14 +28,13 @@
     data () {
       return {
         data: {},
-        msg: '',
-        counts: 0
+        messages: [],
+        count: 0
       }
     },
     methods: {
       getSearch(){
         let question = document.getElementById('search_text').value;
-        this.msg = question;
         document.getElementById('search_text').value = '';
         if (question !== '') {
           this.$http.jsonp('http://api.jisuapi.com/iqa/query?appkey=be02a7f1d82973c8&question=' + question) //机器人智能问答
@@ -42,6 +43,11 @@
 //                console.log(data);
                 this.counts += 1;
                 this.data = data.body.result;
+                this.messages.push(
+                  {q: question, a: this.data.content}
+                );
+//                console.log(this.messages)
+//                document.body.scrollTop = document.getElementsByClassName('content ul')[this.count-1].scrollTop;
               } else {
                 alert('服务端错误' + data.status);
               }
@@ -56,17 +62,19 @@
 
 <style scoped>
   section {
-    margin-bottom: 3.5rem;
+    margin-bottom: 4rem;
+    min-height: 100%;
   }
 
   /*search*/
   .search_p {
     width: 100%;
     height: 1rem;
-    position: absolute;
-    bottom: 3.1rem;
+    position: fixed;
+    bottom: 2.75rem;
     padding-top: 0.8rem;
     background: #1cbfcc;
+    z-index: 100;
   }
 
   #search_text {
@@ -97,7 +105,7 @@
   }
 
   .content {
-    padding-top: 1rem;
+    padding: 2.5rem 0.7rem 2rem 0.7rem;
     font-size: 0.7rem;
   }
 
@@ -109,6 +117,37 @@
   .pic li {
     display: inline-block;
     text-align: center;
+  }
+
+  /*对话框*/
+  .message_p {
+    position: relative;
+    width: 100%;
+    height: 24px;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .me {
+    background: #f1ad8c;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-align: left;
+    position: absolute;
+    right: 0;
+    top: 10px;
+    max-width: 49%;
+  }
+
+  .other {
+    background: #eee;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-align: left;
+    position: absolute;
+    left: 0;
+    top: 10px;
+    max-width: 49%;
   }
 
 

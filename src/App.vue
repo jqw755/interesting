@@ -1,5 +1,10 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{trans:trans}">
+
+    <div class="menu" @click="showMenu">
+      <span v-for="i in 3" class="line"></span>
+    </div>
+    <div class="menuMask" v-if="trans" @click="closeMenu"></div>
 
     <keep-alive>
       <router-view v-if="$route.meta.keepAlive"></router-view>
@@ -38,7 +43,7 @@
       return {
         selected: '_home',
         activeClass: 'active1',
-
+        trans: false
       }
     },
     components: {
@@ -69,7 +74,12 @@
 
     },
     methods: {
-
+      showMenu(){
+        this.trans = true;
+      },
+      closeMenu(){
+        this.trans = false;
+      }
     }
   }
 </script>
@@ -85,6 +95,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
+    /*-webkit-transition: all 0.6s ease;*/
+    /*transition: all 0.6s ease;*/
   }
 
   html {
@@ -100,18 +112,19 @@
     border: 0;
   }
 
-  header{
-    z-index:10 !important;
+  header {
+    z-index: 10 !important;
   }
 
-  .tabbar{
+  .tabbar {
     width: 100%;
-    z-index:10 !important;
+    z-index: 10 !important;
   }
 
   ul li {
     list-style: none;
   }
+
   .tabbar img {
     width: 1.2rem;
     height: 1.2rem;
@@ -129,4 +142,56 @@
     color: #f3be57 !important;
   }
 
+  /*menu*/
+  .menuMask {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 200;
+  }
+
+  .menu {
+    width: 40px;
+    height: 40px;
+    background: cadetblue;
+    line-height: 9px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 101;
+  }
+
+  .line {
+    display: inline-block;
+    width: 76%;
+    margin-left: 12%;
+    height: 3px;
+    background: #fff;
+  }
+
+  .trans {
+    animation: transf 0.6s;
+    -webkit-animation: transf 0.6s;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+  }
+
+  @keyframes transf {
+    from {
+      transform: translate(0);
+    }
+    to {
+      transform: translate(60%);
+    }
+  }
+
+  -webkit-@keyframes transf {
+    from {
+      transform: translate(0);
+    }
+    to {
+      transform: translate(60%);
+    }
+  }
 </style>
